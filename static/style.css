@@ -1,0 +1,310 @@
+:root {
+    --papel: #f1f4f1;
+    --papel-panel: #ffffff;
+    --tinta: #1f2d27;
+    --tinta-suave: #51645b;
+    --borde: #cdd9d2;
+    --teal: #1f6f63;
+    --teal-suave: #dcece8;
+    --oro: #b9893a;
+    --oro-suave: #f5ebd7;
+    --azul-ejes: #93a6ac;
+    --rojo: #a8432e;
+    --rojo-suave: #fbeae6;
+
+    --fuente-display: 'Spectral', serif;
+    --fuente-cuerpo: 'Public Sans', sans-serif;
+    --fuente-mono: 'Space Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: var(--fuente-cuerpo);
+    color: var(--tinta);
+    background-color: var(--papel);
+    background-image: radial-gradient(var(--borde) 0.6px, transparent 0.6px);
+    background-size: 18px 18px;
+    padding: 44px 20px 70px;
+}
+
+.tablero {
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+/* ---------- Encabezado ---------- */
+
+h1 {
+    font-family: var(--fuente-display);
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 1.12;
+    margin: 0 0 14px;
+    color: var(--tinta);
+}
+
+h1 em {
+    font-style: italic;
+    color: var(--teal);
+}
+
+.subtitulo {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--tinta-suave);
+    max-width: 56ch;
+    margin: 0 0 34px;
+}
+
+/* ---------- Layout principal: ledger + plano ---------- */
+
+.taller {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 22px;
+    align-items: start;
+}
+
+@media (max-width: 760px) {
+    .taller { grid-template-columns: 1fr; }
+}
+
+/* ---------- Ledger de puntos ---------- */
+
+.ledger {
+    background: var(--papel-panel);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 20px 20px 22px;
+}
+
+.ledger-encabezado,
+.fila-punto {
+    display: grid;
+    grid-template-columns: 26px 1fr 1fr 28px;
+    gap: 8px;
+    align-items: center;
+}
+
+.ledger-encabezado {
+    font-family: var(--fuente-mono);
+    font-size: 12px;
+    color: var(--tinta-suave);
+    padding: 0 2px 8px;
+    border-bottom: 1px solid var(--borde);
+    margin-bottom: 10px;
+}
+
+.col-x, .col-y { text-align: center; }
+
+.ledger-filas {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.fila-punto {
+    animation: aparecer 0.18s ease;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(-3px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fila-num {
+    font-family: var(--fuente-mono);
+    font-size: 12px;
+    color: var(--oro);
+    text-align: center;
+    font-weight: 700;
+}
+
+.fila-punto input {
+    width: 100%;
+    padding: 8px 6px;
+    text-align: center;
+    font-family: var(--fuente-mono);
+    font-size: 14px;
+    border: 1.4px solid var(--borde);
+    border-radius: 6px;
+    background: var(--papel);
+    color: var(--tinta);
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.fila-punto input:focus {
+    outline: none;
+    border-color: var(--teal);
+    background: var(--papel-panel);
+}
+
+.fila-quitar {
+    width: 26px;
+    height: 26px;
+    border: none;
+    background: transparent;
+    color: var(--tinta-suave);
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    line-height: 1;
+}
+
+.fila-quitar:hover {
+    background: var(--rojo-suave);
+    color: var(--rojo);
+}
+
+.btn-agregar {
+    width: 100%;
+    margin-top: 14px;
+    padding: 10px;
+    border: 1.4px dashed var(--borde);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--tinta-suave);
+    font-family: var(--fuente-cuerpo);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-agregar:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+}
+
+.acciones {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-calcular {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: var(--teal);
+    color: #ffffff;
+    font-family: var(--fuente-cuerpo);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.btn-calcular:hover { background: #17564d; }
+.btn-calcular:active { transform: scale(0.98); }
+
+.btn-texto {
+    border: none;
+    background: transparent;
+    color: var(--tinta-suave);
+    font-family: var(--fuente-cuerpo);
+    font-size: 13.5px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.btn-texto:hover { color: var(--teal); }
+
+.mensaje-error {
+    margin-top: 14px;
+    background: var(--rojo-suave);
+    border: 1px solid #ecc6bc;
+    color: var(--rojo);
+    font-size: 13.5px;
+    padding: 10px 12px;
+    border-radius: 7px;
+    line-height: 1.5;
+}
+
+/* ---------- Plano (gráfico SVG) ---------- */
+
+.plano {
+    background: var(--papel-panel);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 16px 16px 10px;
+}
+
+#grafico {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.pista-plano {
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--tinta-suave);
+    margin: 8px 0 2px;
+}
+
+/* ---------- Placa del polinomio ---------- */
+
+.placa {
+    margin-top: 22px;
+    background: var(--papel-panel);
+    border: 1px solid var(--borde);
+    border-left: 5px solid var(--teal);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 22px;
+}
+
+.placa-etiqueta {
+    display: block;
+    font-family: var(--fuente-mono);
+    font-size: 12px;
+    color: var(--tinta-suave);
+    margin-bottom: 8px;
+}
+
+#placa-grado {
+    color: var(--teal);
+    font-weight: 700;
+}
+
+.placa-formula {
+    font-family: var(--fuente-display);
+    font-style: italic;
+    font-size: 24px;
+    color: var(--tinta);
+    margin: 0;
+    overflow-x: auto;
+}
+
+/* ---------- Elementos del gráfico SVG (clases usadas por app.js) ---------- */
+
+.svg-grid-line { stroke: var(--borde); stroke-width: 1; }
+.svg-eje { stroke: var(--azul-ejes); stroke-width: 1.4; }
+.svg-curva {
+    fill: none;
+    stroke: var(--teal);
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.svg-pin-tallo { stroke: var(--oro); stroke-width: 1.6; }
+.svg-pin-cabeza {
+    fill: var(--oro-suave);
+    stroke: var(--oro);
+    stroke-width: 2;
+}
+.svg-pin-etiqueta {
+    font-family: var(--fuente-mono);
+    font-size: 11px;
+    fill: var(--tinta-suave);
+}
+.svg-eje-etiqueta {
+    font-family: var(--fuente-mono);
+    font-size: 10.5px;
+    fill: var(--tinta-suave);
+}

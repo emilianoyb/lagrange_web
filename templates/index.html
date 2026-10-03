@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interpolación de Lagrange</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Public+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="tablero">
+
+  <header class="encabezado">
+    <h1>Interpolación de <em>Lagrange</em></h1>
+    <p class="subtitulo">
+      Coloca los puntos por los que debe pasar la curva. El polinomio
+      que los conecta con exactitud aparece abajo, trazado en vivo.
+    </p>
+  </header>
+
+  <main class="taller">
+
+    <section class="ledger" aria-label="Puntos a interpolar">
+      <div class="ledger-encabezado">
+        <span class="col-num"></span>
+        <span class="col-x">x</span>
+        <span class="col-y">y</span>
+        <span class="col-quitar"></span>
+      </div>
+      <div id="filas-puntos" class="ledger-filas"></div>
+
+      <button type="button" id="btn-agregar" class="btn-agregar">
+        + Agregar punto
+      </button>
+
+      <div class="acciones">
+        <button type="button" id="btn-calcular" class="btn-calcular">Trazar curva</button>
+        <button type="button" id="btn-ejemplo" class="btn-texto">Cargar ejemplo</button>
+      </div>
+
+      <p id="mensaje-error" class="mensaje-error" hidden></p>
+    </section>
+
+    <section class="plano" aria-label="Gráfico del polinomio">
+      <svg id="grafico" viewBox="0 0 640 440" preserveAspectRatio="xMidYMid meet">
+        <!-- la grilla, los ejes, la curva y los pines se dibujan por JS -->
+      </svg>
+      <p class="pista-plano">Los puntos son los alfileres; la curva es el polinomio único que los atraviesa.</p>
+    </section>
+
+  </main>
+
+  <section id="placa-resultado" class="placa" hidden>
+    <span class="placa-etiqueta">Polinomio interpolante &mdash; grado <span id="placa-grado"></span></span>
+    <p id="placa-formula" class="placa-formula"></p>
+  </section>
+
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
