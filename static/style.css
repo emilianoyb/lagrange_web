@@ -12,7 +12,7 @@
     --rojo: #a8432e;
     --rojo-suave: #fbeae6;
 
-    --fuente-display: 'Spectral', serif;
+    --fuente-display: 'Roboto Condensed', sans-serif;
     --fuente-cuerpo: 'Public Sans', sans-serif;
     --fuente-mono: 'Space Mono', monospace;
 }
@@ -46,7 +46,6 @@ h1 {
 }
 
 h1 em {
-    font-style: italic;
     color: var(--teal);
 }
 
