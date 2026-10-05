@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 
-from lagrange import interpolar, muestrear_curva, MIN_PUNTOS, MAX_PUNTOS
+from lagrange import interpolar, muestrear_curva, evaluar_polinomio, MIN_PUNTOS, MAX_PUNTOS
 
 app = Flask(__name__)
 
@@ -48,6 +48,47 @@ def calcular():
         "grado": resultado["grado"],
         "curva": curva,
         "puntos": puntos,
+    })
+
+
+@app.route("/evaluar", methods=["POST"])
+def evaluar():
+    """
+    Recibe los mismos puntos ya interpolados más un valor de x, y
+    regresa P(x): el valor del polinomio interpolante en ese punto.
+    """
+    datos = request.get_json(silent=True)
+
+    if not datos or "puntos" not in datos or "x" not in datos:
+        return jsonify({"error": "Faltan los puntos o el valor de x a evaluar."}), 400
+
+    puntos_crudos = datos["puntos"]
+
+    try:
+        puntos = [(float(p["x"]), float(p["y"])) for p in puntos_crudos]
+    except (ValueError, TypeError, KeyError):
+        return jsonify({"error": "Cada punto debe tener una coordenada x y una y numéricas."}), 400
+
+    try:
+        x_valor = float(datos["x"])
+    except (ValueError, TypeError):
+        return jsonify({"error": "El valor de x a evaluar debe ser numérico."}), 400
+
+    resultado = interpolar(puntos)
+
+    if resultado["error"]:
+        return jsonify({"error": resultado["error"]})
+
+    evaluacion = evaluar_polinomio(resultado["polinomio_expr"], x_valor)
+
+    if evaluacion["error"]:
+        return jsonify({"error": evaluacion["error"]})
+
+    return jsonify({
+        "error": None,
+        "x": x_valor,
+        "valor_exacto": evaluacion["valor_exacto"],
+        "valor_decimal": evaluacion["valor_decimal"],
     })
 
 

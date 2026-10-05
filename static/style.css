@@ -12,7 +12,7 @@
     --rojo: #a8432e;
     --rojo-suave: #fbeae6;
 
-    --fuente-display: 'Roboto Condensed', sans-serif;
+    --fuente-display: 'Google Sans', sans-serif;
     --fuente-cuerpo: 'Public Sans', sans-serif;
     --fuente-mono: 'Space Mono', monospace;
 }
@@ -46,6 +46,7 @@ h1 {
 }
 
 h1 em {
+    font-style: italic;
     color: var(--teal);
 }
 
@@ -260,7 +261,7 @@ h1 em {
 
 .placa-etiqueta {
     display: block;
-    font-family: var(--fuente-cuerpo);
+    font-family: var(--fuente-mono);
     font-size: 12px;
     color: var(--tinta-suave);
     margin-bottom: 8px;
@@ -272,12 +273,82 @@ h1 em {
 }
 
 .placa-formula {
-    font-family: var(--fuente-cuerpo);
-    /*font-style: italic; */
+    font-family: var(--fuente-display);
+    font-style: italic;
     font-size: 24px;
     color: var(--tinta);
     margin: 0;
     overflow-x: auto;
+}
+
+/* ---------- Evaluador puntual: P(x) para un x dado ---------- */
+
+.evaluador {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--borde);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.evaluador-etiqueta {
+    font-size: 14px;
+    color: var(--tinta-suave);
+    font-weight: 600;
+}
+
+#campo-x-evaluar {
+    width: 120px;
+    padding: 8px 10px;
+    font-family: var(--fuente-mono);
+    font-size: 14px;
+    text-align: center;
+    border: 1.4px solid var(--borde);
+    border-radius: 6px;
+    background: var(--papel);
+    color: var(--tinta);
+}
+
+#campo-x-evaluar:focus {
+    outline: none;
+    border-color: var(--teal);
+    background: var(--papel-panel);
+}
+
+.btn-evaluar {
+    padding: 8px 16px;
+    border: 1.4px solid var(--teal);
+    border-radius: 6px;
+    background: var(--teal-suave);
+    color: var(--teal);
+    font-family: var(--fuente-cuerpo);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.btn-evaluar:hover {
+    background: var(--teal);
+    color: #ffffff;
+}
+
+.evaluador-resultado {
+    margin: 12px 0 0;
+    font-family: var(--fuente-mono);
+    font-size: 14.5px;
+    color: var(--tinta);
+}
+
+.evaluador-resultado .valor-destacado {
+    color: var(--oro);
+    font-weight: 700;
+}
+
+.evaluador-resultado.es-error {
+    color: var(--rojo);
 }
 
 /* ---------- Elementos del gráfico SVG (clases usadas por app.js) ---------- */

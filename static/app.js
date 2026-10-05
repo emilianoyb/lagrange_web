@@ -8,6 +8,9 @@
     const placa = document.getElementById("placa-resultado");
     const placaFormula = document.getElementById("placa-formula");
     const placaGrado = document.getElementById("placa-grado");
+    const campoXEvaluar = document.getElementById("campo-x-evaluar");
+    const btnEvaluar = document.getElementById("btn-evaluar");
+    const evaluadorResultado = document.getElementById("evaluador-resultado");
 
     const SVG_NS = "http://www.w3.org/2000/svg";
     const ANCHO = 640;
@@ -85,6 +88,7 @@
         agregarFila(3, 9);
         ocultarError();
         placa.hidden = true;
+        ocultarEvaluacion();
     });
 
     function ocultarError() {
@@ -120,6 +124,7 @@
             if (!resp.ok || datos.error) {
                 mostrarError(datos.error || "Ocurrió un error al calcular el polinomio.");
                 placa.hidden = true;
+                ocultarEvaluacion();
                 dibujarGrafico(null);
                 return;
             }
@@ -137,7 +142,73 @@
         placaGrado.textContent = datos.grado;
         placaFormula.textContent = "P(x) = " + formatearPolinomio(datos.polinomio);
         placa.hidden = false;
+        ocultarEvaluacion();
         dibujarGrafico(datos);
+    }
+
+    // ---------- Evaluar el polinomio en un x dado ----------
+
+    function ocultarEvaluacion() {
+        evaluadorResultado.hidden = true;
+        evaluadorResultado.classList.remove("es-error");
+    }
+
+    btnEvaluar.addEventListener("click", async () => {
+        const xTexto = campoXEvaluar.value.trim();
+        if (xTexto === "" || isNaN(Number(xTexto))) {
+            evaluadorResultado.textContent = "Escribe un valor numérico de x para evaluar.";
+            evaluadorResultado.classList.add("es-error");
+            evaluadorResultado.hidden = false;
+            return;
+        }
+
+        const puntosCrudos = leerPuntos();
+        btnEvaluar.disabled = true;
+        const textoOriginal = btnEvaluar.textContent;
+        btnEvaluar.textContent = "Evaluando…";
+
+        try {
+            const resp = await fetch("/evaluar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ puntos: puntosCrudos, x: xTexto }),
+            });
+            const datos = await resp.json();
+
+            if (!resp.ok || datos.error) {
+                evaluadorResultado.textContent = datos.error || "No se pudo evaluar el polinomio.";
+                evaluadorResultado.classList.add("es-error");
+                evaluadorResultado.hidden = false;
+                return;
+            }
+
+            mostrarEvaluacion(datos);
+        } catch (e) {
+            evaluadorResultado.textContent = "No se pudo conectar con el servidor. Intenta de nuevo.";
+            evaluadorResultado.classList.add("es-error");
+            evaluadorResultado.hidden = false;
+        } finally {
+            btnEvaluar.disabled = false;
+            btnEvaluar.textContent = textoOriginal;
+        }
+    });
+
+    campoXEvaluar.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter") btnEvaluar.click();
+    });
+
+    function mostrarEvaluacion(datos) {
+        evaluadorResultado.classList.remove("es-error");
+        const xFmt = formatearNum(datos.x);
+        const decimalFmt = formatearNum(datos.valor_decimal);
+        const exactoFmt = formatearPolinomio(datos.valor_exacto);
+
+        let texto = `P(${xFmt}) = <span class="valor-destacado">${decimalFmt}</span>`;
+        if (exactoFmt !== decimalFmt && /[0-9]\/[0-9]/.test(exactoFmt)) {
+            texto += ` &nbsp;(= ${exactoFmt})`;
+        }
+        evaluadorResultado.innerHTML = texto;
+        evaluadorResultado.hidden = false;
     }
 
     function formatearPolinomio(expresionPython) {

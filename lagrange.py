@@ -94,8 +94,35 @@ def interpolar(puntos):
     return {
         'polinomio_str': str(polinomio),
         'polinomio_latex': sp.latex(polinomio),
+        'polinomio_expr': polinomio,
         'grado': grado,
         'funcion': funcion,
+        'error': None,
+    }
+
+
+def evaluar_polinomio(polinomio_expr, x_valor):
+    """
+    Evalúa el polinomio interpolante (expresión simbólica de sympy) en un
+    valor x_valor dado por el usuario.
+
+    Retorna un dict con:
+        'valor_exacto'  : el resultado como fracción/expresión exacta (texto)
+        'valor_decimal' : el resultado como número decimal
+        'error'         : mensaje de error, o None si no hubo error
+    """
+    x = sp.symbols('x')
+    try:
+        x_exacto = sp.nsimplify(x_valor)
+        valor = sp.nsimplify(polinomio_expr.subs(x, x_exacto))
+        valor = sp.simplify(valor)
+    except Exception:
+        return {'valor_exacto': None, 'valor_decimal': None,
+                'error': 'No se pudo evaluar el polinomio en ese valor de x.'}
+
+    return {
+        'valor_exacto': str(valor),
+        'valor_decimal': float(valor),
         'error': None,
     }
 
